@@ -4,9 +4,9 @@ import cv2
 import sys
 
 # Get user supplied values
-imagePath = sys.argv[2]
-cascPath = sys.argv[1]
-
+imagePath = sys.argv[1]
+#cascPath = sys.argv[2]
+cascPath="training_out/cascade.xml"
 # Create the haar cascade
 faceCascade = cv2.CascadeClassifier(cascPath)
 
