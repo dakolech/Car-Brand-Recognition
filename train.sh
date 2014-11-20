@@ -1,5 +1,7 @@
 #!/bin/bash
 dir="training_out"
+rm -r -f $dir
+mkdir $dir
 rm -r -f $dir/*
 vecFile=$1
 posNum=$2-1
