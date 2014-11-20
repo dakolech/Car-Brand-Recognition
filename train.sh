@@ -1,12 +1,11 @@
 #!/bin/bash
 dir="training_out"
 rm -r -f $dir/*
-posNum=`cat ./positive_list |wc -l`
+vecFile=$1
+posNum=$2-1
+
 negNum=`cat ./negative_list |wc -l`
-vecFile="pos.vec"
 wh=25
-let posNum=$posNum-1
-ftype="LBP"
 stages=15
 ftype="HAAR"
 #posnum=199

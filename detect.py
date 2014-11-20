@@ -14,7 +14,7 @@ image = cv2.imread(imagePath)
 w=image.shape[1]
 
 scale=1000.0/w
-#image=cv2.resize(image,(0,0),fx=scale,fy=scale)
+image=cv2.resize(image,(0,0),fx=scale,fy=scale)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 # Detect objects in the image
