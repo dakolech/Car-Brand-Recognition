@@ -23,7 +23,7 @@ symbols = carCascade.detectMultiScale(
     scaleFactor=1.1,
     minNeighbors=5,
     minSize=(20, 20),
-    maxSize=(70,70),
+    #maxSize=(70,70),
     flags = cv2.cv.CV_HAAR_SCALE_IMAGE
 )
 
