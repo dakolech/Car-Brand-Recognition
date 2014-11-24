@@ -38,7 +38,7 @@ hondaCascade = cv2.CascadeClassifier(cascPath+"honda.xml")
 mercedesCascade = cv2.CascadeClassifier(cascPath+"mercedes.xml")
 renaultCascade = cv2.CascadeClassifier(cascPath+"renault.xml")
 citroenCascade = cv2.CascadeClassifier(cascPath+"citroen.xml")
-#opelCascade = cv2.CascadeClassifier(cascPath+"opel.xml")
+opelCascade = cv2.CascadeClassifier(cascPath+"opel.xml")
 # Read the image
 imagePath = sys.argv[1]
 
@@ -159,7 +159,7 @@ mercedeses = mercedesCascade.detectMultiScale(
     flags = cv2.cv.CV_HAAR_SCALE_IMAGE
 )
 opels=[]
-'''
+
 opels = opelCascade.detectMultiScale(
     gray,
     scaleFactor=1.1,
@@ -169,7 +169,7 @@ opels = opelCascade.detectMultiScale(
     flags = cv2.cv.CV_HAAR_SCALE_IMAGE
 )
 
-'''
+
 
 
 
@@ -190,7 +190,7 @@ for (x, y, w, h) in hondas:
 	found.append(im)
 	
 for (x, y, w, h) in mercedeses:
-	cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+	cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
 	im=image[y:y+h,x:x+w]
 	w=im.shape[1]
 	scalex=25.0/w
@@ -200,7 +200,7 @@ for (x, y, w, h) in mercedeses:
 	im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 	found.append(im)
 for (x, y, w, h) in citroens:
-	cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+	cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 255), 2)
 	im=image[y:y+h,x:x+w]
 	w=im.shape[1]
 	scalex=25.0/w
@@ -210,7 +210,7 @@ for (x, y, w, h) in citroens:
 	im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 	found.append(im)
 for (x, y, w, h) in renaults:
-	cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+	cv2.rectangle(image, (x, y), (x+w, y+h), (255, 255, 0), 2)
 	im=image[y:y+h,x:x+w]
 	w=im.shape[1]
 	scalex=25.0/w
@@ -220,7 +220,7 @@ for (x, y, w, h) in renaults:
 	im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 	found.append(im)
 for (x, y, w, h) in opels:
-	cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+	cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
 	im=image[y:y+h,x:x+w]
 	w=im.shape[1]
 	scalex=25.0/w
@@ -241,23 +241,29 @@ found=np.array(found).reshape(-1,625).astype(np.float32)
 labels=np.array(labels)
 knn = cv2.KNearest()
 knn.train(train,labels)
-if found.shape[0]==len(hondas):
-	print numToBrand(0)
-elif found.shape[0]==len(citroens):
-	print numToBrand(1)
-elif found.shape[0]==len(renaults):
-	print numToBrand(2)
-elif found.shape[0]==len(mercedeses):
-	print numToBrand(3)
-elif found.shape[0]==len(opels):
-	print numToBrand(4)
-elif found.shape[0]>0:
-	ret,results,neighbours,dist = knn.find_nearest(found,k=10)
-	#print "result: ", results,"\n"
-	#print "neighbours: ", neighbours,"\n"
-	#print "distance: ", dist
-	print numToBrand(pickBestResult(results,neighbours,5))
+
+brandNum=0;
+if found.shape[0]>0:
+	if found.shape[0]==len(hondas):
+		brandNum=0
+	elif found.shape[0]==len(citroens):
+		brandNum=1
+	elif found.shape[0]==len(renaults):
+		brandNum=2
+	elif found.shape[0]==len(mercedeses):
+		brandNum=3
+	elif found.shape[0]==len(opels):
+		brandNum=4
+	else:
+		ret,results,neighbours,dist = knn.find_nearest(found,k=10)
+		#print "result: ", results,"\n"
+		#print "neighbours: ", neighbours,"\n"
+		#print "distance: ", dist
+		brandNum=pickBestResult(results,neighbours,5)
+		
 else:
-	print numToBrand(-1)
-cv2.imshow("Car brand detection", image)
-cv2.waitKey(0)
+	brandNum=-1
+
+print imagePath+": "+numToBrand(brandNum)
+#cv2.imshow("Car brand detection", image)
+#cv2.waitKey(0)

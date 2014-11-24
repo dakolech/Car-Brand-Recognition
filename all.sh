@@ -1,5 +1,5 @@
 #!/bin/bash
 
-for i in `ls samples|head -n $1`;do
-	./classify.py samples/$i
+for i in `ls samples/* -1`;do
+	./classify.py $i
 done
