@@ -8,7 +8,7 @@ posNum=$2-1
 
 negNum=`cat ./negative_list |wc -l`
 wh=25
-stages=22
+stages=15
 ftype="HAAR"
 mem1=3072
 mem2=3072
